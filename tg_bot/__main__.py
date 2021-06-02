@@ -153,7 +153,7 @@ def start(bot: Bot, update: Update, args: List[str]):
                     [[InlineKeyboardButton(text="👨‍💼 Master", url="t.me/MRK_YT"),  InlineKeyboardButton(text="Help 🤔", url="https://t.me/{}?start=help".format(bot.username))],
                      [InlineKeyboardButton(text="🖥️ Tutorial Video🖥️", url="t.me/MRK_YT")],
                      [InlineKeyboardButton(text="👥 Any Doubt", url="t.me/Mo_Tech_Group"), InlineKeyboardButton(text="🤖MT Updates", url="t.me/Mo_Tech_YT")],
-                     [InlineKeyboardButton(text="🎬 Youtube Channel", url="https://youtube.com/channel/UCmGBpXoM-OEm-FacOccVKgQ"), InlineKeyboardButton(text="Repo ⛓️", url="https://github.com/MRK-YT/MT-Rose-Bot-Model)],
+                     [InlineKeyboardButton(text="🎬 Youtube Channel", url="https://youtube.com/channel/UCmGBpXoM-OEm-FacOccVKgQ"), InlineKeyboardButton(text="Repo ⛓️", url="https://github.com/MRK-YT/MT-Rose-Bot-Model")],
                      [InlineKeyboardButton(text="➕ Add me to your group ➕", url="t.me/{}?startgroup=true".format(bot.username)) ]]))
     else:
         update.effective_message.reply_text("ചത്തിട്ടില്ലാ...")
