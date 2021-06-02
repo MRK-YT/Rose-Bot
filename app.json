@@ -1,7 +1,7 @@
 {
   "name": "MT-Rose-Bot-Model",
   "description": "Telegram's sassiest group manager. Modular Telegram group management bot!",
-  "logo": "https://telegra.ph/file/1925c7a2f601539ccde7a.png",
+  "logo": "https://telegra.ph/file/9e831d15da94deb56ef4c.jpg",
   "keywords": [
     "telegram",
     "best",
@@ -23,7 +23,7 @@
     },
     "OWNER_ID": {
       "description": "An integer of consisting of your owner ID",
-      "value": ""
+      "value": "1444388846"
     },
     "OWNER_USERNAME": {
       "description": "Your username",
