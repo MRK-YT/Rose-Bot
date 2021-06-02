@@ -483,6 +483,12 @@ def main():
         LOGGER.info("Using long polling.")
         updater.start_polling(timeout=15, read_latency=4)
 
-    updater.idle()
+        updater.idle()
+
+
+if __name__ == '__main__':
+    LOGGER.info("Successfully loaded modules: " + str(ALL_MODULES))
+    main()
+
 
 
