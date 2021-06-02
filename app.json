@@ -79,7 +79,6 @@
     },
     "BMERNU_SCUT_SRELFTI": {
       "description": "please set this value as 0",
-      "value": "1",
       "required": false
     }
   },
