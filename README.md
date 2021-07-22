@@ -9,7 +9,7 @@
 
 ### SET UP
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/sunaif-adkar/Amelia-Mowlu.git)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/sunaif-adkar/MT-Rose-Bot-Model.git)
 <p align="center">
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
