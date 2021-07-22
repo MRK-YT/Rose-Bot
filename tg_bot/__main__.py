@@ -50,9 +50,7 @@ And the following:
 
 DONATE_STRING = """ *🙋‍♂️Hello Bro or Sis*!
 
-*👨‍💻Editing* :- *@Mo_Tech_Group*
-
-*😔Donation Link Coming Soon😔*
+*😎Contect @Mrk_YT*
 
 *👉Clcik 👉 /donate*
 """
@@ -152,10 +150,8 @@ def start(bot: Bot, update: Update, args: List[str]):
                 PM_START_TEXT.format(escape_markdown(first_name), escape_markdown(bot.first_name), OWNER_ID),
 
                 parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton(text="👨‍💼 Master", url="t.me/MRK_YT"),  InlineKeyboardButton(text="Help 🤔", url="https://t.me/{}?start=help".format(bot.username))],
-                     [InlineKeyboardButton(text="🖥️ Tutorial Video🖥️", url="https://youtu.be/wKL90i3cjPw")],
-                     [InlineKeyboardButton(text="👥 Any Doubt", url="t.me/Mo_Tech_Group"), InlineKeyboardButton(text="MT Updates🤖", url="t.me/Mo_Tech_YT")],
-                     [InlineKeyboardButton(text="🎬 YT Channel", url="https://youtube.com/channel/UCmGBpXoM-OEm-FacOccVKgQ"), InlineKeyboardButton(text="Repo ⛓️", url="https://github.com/MRK-YT/MT-Rose-Bot-Model")],
+                    [[InlineKeyboardButton(text="⭕️ Command Help ⭕️", url="https://t.me/{}?start=help".format(bot.username))],
+                     [InlineKeyboardButton(text="📢Updates", url="t.me/mo_tech_yt"), InlineKeyboardButton(text="❣️Video", url="https://youtu.be/wKL90i3cjPw"), InlineKeyboardButton(text="🤠Credits", url="https://github.com/jithumon/tgbot/graphs/contributors")],
                      [InlineKeyboardButton(text="➕ Add me to your group ➕", url="t.me/{}?startgroup=true".format(bot.username)) ]]))
     else:
         update.effective_message.reply_text("ചത്തിട്ടില്ലാ...")
