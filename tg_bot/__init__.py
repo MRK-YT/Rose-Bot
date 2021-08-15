@@ -59,7 +59,7 @@ if ENV:
     ALLOW_EXCL = os.environ.get('ALLOW_EXCL', False)
 
     try:
-        BMERNU_SCUT_SRELFTI = "2000" # working Code
+        BMERNU_SCUT_SRELFTI = int(os.environ.get('BMERNU_SCUT_SRELFTI', None))
     except ValueError:
         BMERNU_SCUT_SRELFTI = None
 
