@@ -23,6 +23,7 @@ PM_START_TEXT = """
 
 *ഞാൻ* [ഇദ്ദേഹം](tg://user?id={}) *നോക്കി നടത്തുന്ന ഒരു അടിപൊളി അഡ്മിൻ ബോട്ടാണ്.*
 
+*എന്നെ നിർമിച്ചദ് zinan tech 2.O subscribe the channel👈*
 *എന്നെ നിർമ്മിച്ചിരിക്കുന്നത് python3 യിൽ python-telegram-bot ലൈബ്രറി ഉപയോഗിച്ചാണ്. ഞാൻ പൂർണ്ണമായിട്ടും ഓപ്പൺസോഴ്സ്ഡ് ആണ്. എന്റെ കോഡ് നിങ്ങൾക്ക് തായ കാണുവാൻ സാധിക്കും.*
 
 *എന്നെപ്പോലെ ഒരു അഡ്മിൻ ബോട്ടിനെ ഉണ്ടാക്കുവാൻ താഴെ കൊടുത്തിരിക്കുന്ന വീഡിയോ കാണുക.*
@@ -50,9 +51,8 @@ And the following:
 
 DONATE_STRING = """ *🙋‍♂️Hello Bro or Sis*!
 
-*😎Contect @Mrk_YT*
+*😎Contect @sinumallu*
 
-*👉Clcik 👉 /donate*
 """
 
 IMPORTED = {}
@@ -151,7 +151,7 @@ def start(bot: Bot, update: Update, args: List[str]):
 
                 parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton(text="⭕️ Command Help ⭕️", url="https://t.me/{}?start=help".format(bot.username))],
-                     [InlineKeyboardButton(text="📢Updates", url="t.me/mo_tech_yt"), InlineKeyboardButton(text="❣️Video", url="https://youtu.be/wKL90i3cjPw"), InlineKeyboardButton(text="🤠Credits", url="https://github.com/jithumon/tgbot/graphs/contributors")],
+                     [InlineKeyboardButton(text="📢Updates", url="t.me/zinantech2O"),],
                      [InlineKeyboardButton(text="➕ Add me to your group ➕", url="t.me/{}?startgroup=true".format(bot.username)) ]]))
     else:
         update.effective_message.reply_text("ചത്തിട്ടില്ലാ...")
