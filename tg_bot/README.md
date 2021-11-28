@@ -3,7 +3,7 @@
 <img src="https://telegra.ph/file/9e831d15da94deb56ef4c.jpg" width="150" height="150"><br>
 
 
-```
+
 from tg_bot.sample_config import Config
 
 
@@ -18,7 +18,7 @@ class Development(Config):
     SUDO_USERS = [18673980, 83489514]  # List of id's for users which have sudo access to the bot.
     LOAD = [12345678910]
     NO_LOAD = ['translation'] # translation stop
-```
+
 
 
 
