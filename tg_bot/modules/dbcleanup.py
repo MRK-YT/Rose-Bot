@@ -44,13 +44,11 @@ def get_invalid_chats(bot: Bot, update: Update, remove: bool = False):
     except:
         pass
 
-    if not remove:
-        return kicked_chats
-    else:
+    if remove:
         for muted_chat in chat_list:
             sleep(0.1)
             user_sql.rem_chat(muted_chat)
-        return kicked_chats
+    return kicked_chats
 
 
 def get_invalid_gban(bot: Bot, update: Update, remove: bool = False):
@@ -69,13 +67,11 @@ def get_invalid_gban(bot: Bot, update: Update, remove: bool = False):
         except:
             pass
 
-    if not remove:
-        return ungbanned_users
-    else:
+    if remove:
         for user_id in ungban_list:
             sleep(0.1)
             gban_sql.ungban_user(user_id)
-        return ungbanned_users
+    return ungbanned_users
 
 @run_async
 def dbcleanup(bot: Bot, update: Update):
@@ -90,9 +86,7 @@ def dbcleanup(bot: Bot, update: Update):
     reply = f"Total invalid chats - {invalid_chat_count}\n"
     reply += f"Total invalid gbanned users - {invalid_gban_count}"
 
-    buttons = [
-        [InlineKeyboardButton("Cleanup DB", callback_data=f"db_cleanup")]
-    ]
+    buttons = [[InlineKeyboardButton("Cleanup DB", callback_data='db_cleanup')]]
 
     update.effective_message.reply_text(reply, reply_markup=InlineKeyboardMarkup(buttons))
 
@@ -133,9 +127,7 @@ def get_muted_chats(bot: Bot, update: Update, leave: bool = False):
     except:
         pass
 
-    if not leave:
-        return muted_chats
-    else:
+    if leave:
         for muted_chat in chat_list:
             sleep(0.1)
             try:
@@ -143,7 +135,7 @@ def get_muted_chats(bot: Bot, update: Update, leave: bool = False):
             except:
                 pass
             user_sql.rem_chat(muted_chat)
-        return muted_chats
+    return muted_chats
 
 
 @run_async
@@ -153,8 +145,9 @@ def leave_muted_chats(bot: Bot, update: Update):
     muted_chats = get_muted_chats(bot, update)
 
     buttons = [
-        [InlineKeyboardButton("Leave chats", callback_data=f"db_leave_chat")]
+        [InlineKeyboardButton("Leave chats", callback_data='db_leave_chat')]
     ]
+
 
     update.effective_message.reply_text(f"I am muted in {muted_chats} chats.",
                                         reply_markup=InlineKeyboardMarkup(buttons))
@@ -172,22 +165,22 @@ def callback_button(bot: Bot, update: Update):
 
     bot.answer_callback_query(query.id)
 
-    if query_type == "db_leave_chat":
-        if query.from_user.id in admin_list:
-            bot.editMessageText("Leaving chats ...", chat_id, message.message_id)
-            chat_count = get_muted_chats(bot, update, True)
-            bot.sendMessage(chat_id, f"Left {chat_count} chats.")
-        else:
-            query.answer("You are not allowed to use this.")
+    if query_type == "db_leave_chat" and query.from_user.id in admin_list:
+        bot.editMessageText("Leaving chats ...", chat_id, message.message_id)
+        chat_count = get_muted_chats(bot, update, True)
+        bot.sendMessage(chat_id, f"Left {chat_count} chats.")
+    elif (
+        query_type == "db_leave_chat"
+        or query_type == "db_cleanup"
+        and query.from_user.id not in admin_list
+    ):
+        query.answer("You are not allowed to use this.")
     elif query_type == "db_cleanup":
-        if query.from_user.id in admin_list:
-            bot.editMessageText("Cleaning up DB ...", chat_id, message.message_id)
-            invalid_chat_count = get_invalid_chats(bot, update, True)
-            invalid_gban_count = get_invalid_gban(bot, update, True)
-            reply = "Cleaned up {} chats and {} gbanned users from db.".format(invalid_chat_count, invalid_gban_count)
-            bot.sendMessage(chat_id, reply)
-        else:
-            query.answer("You are not allowed to use this.")
+        bot.editMessageText("Cleaning up DB ...", chat_id, message.message_id)
+        invalid_chat_count = get_invalid_chats(bot, update, True)
+        invalid_gban_count = get_invalid_gban(bot, update, True)
+        reply = "Cleaned up {} chats and {} gbanned users from db.".format(invalid_chat_count, invalid_gban_count)
+        bot.sendMessage(chat_id, reply)
 
 
 DB_CLEANUP_HANDLER = CommandHandler("dbcleanup", dbcleanup)
