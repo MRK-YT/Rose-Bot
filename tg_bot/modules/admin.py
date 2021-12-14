@@ -34,7 +34,7 @@ def promote(bot: Bot, update: Update, args: List[str]) -> str:
         return ""
 
     user_member = chat.get_member(user_id)
-    if user_member.status == 'administrator' or user_member.status == 'creator':
+    if user_member.status in ['administrator', 'creator']:
         message.reply_text("How am I meant to promote someone that's already an admin?")
         return ""
 
@@ -84,7 +84,7 @@ def demote(bot: Bot, update: Update, args: List[str]) -> str:
         message.reply_text("This person CREATED the chat, how would I demote them?")
         return ""
 
-    if not user_member.status == 'administrator':
+    if user_member.status != 'administrator':
         message.reply_text("Can't demote what wasn't promoted!")
         return ""
 
@@ -125,21 +125,19 @@ def pin(bot: Bot, update: Update, args: List[str]) -> str:
     user = update.effective_user  # type: Optional[User]
     chat = update.effective_chat  # type: Optional[Chat]
 
-    is_group = chat.type != "private" and chat.type != "channel"
+    is_group = chat.type not in ["private", "channel"]
 
     prev_message = update.effective_message.reply_to_message
 
     is_silent = True
-    if len(args) >= 1:
-        is_silent = not (args[0].lower() == 'notify' or args[0].lower() == 'loud' or args[0].lower() == 'violent')
+    if args:
+        is_silent = not args[0].lower() in ['notify', 'loud', 'violent']
 
     if prev_message and is_group:
         try:
             bot.pinChatMessage(chat.id, prev_message.message_id, disable_notification=is_silent)
         except BadRequest as excp:
-            if excp.message == "Chat_not_modified":
-                pass
-            else:
+            if excp.message != "Chat_not_modified":
                 raise
         return "<b>{}:</b>" \
                "\n#PINNED" \
@@ -160,9 +158,7 @@ def unpin(bot: Bot, update: Update) -> str:
     try:
         bot.unpinChatMessage(chat.id)
     except BadRequest as excp:
-        if excp.message == "Chat_not_modified":
-            pass
-        else:
+        if excp.message != "Chat_not_modified":
             raise
 
     return "<b>{}:</b>" \
@@ -176,10 +172,10 @@ def unpin(bot: Bot, update: Update) -> str:
 def invite(bot: Bot, update: Update):
     chat = update.effective_chat  # type: Optional[Chat]
     message = update.effective_message #type: Optional[Messages]
-    
+
     if chat.username:
         update.effective_message.reply_text("@{}".format(chat.username))
-    elif chat.type == chat.SUPERGROUP or chat.type == chat.CHANNEL:
+    elif chat.type in [chat.SUPERGROUP, chat.CHANNEL]:
         bot_member = chat.get_member(bot.id)
         if bot_member.can_invite_users:
             invitelink = bot.exportChatInviteLink(chat.id)
@@ -198,8 +194,8 @@ def link_public(bot: Bot, update: Update):
     message = update.effective_message #type: Optional[Messages]
     chat_id = update.effective_chat.id
     invitelink = sql.get_link(chat_id)
-    
-    if chat.type == chat.SUPERGROUP or chat.type == chat.CHANNEL:
+
+    if chat.type in [chat.SUPERGROUP, chat.CHANNEL]:
         if invitelink:
             message.reply_text("Link of *{}*:\n`{}`".format(chat.title, invitelink), parse_mode=ParseMode.MARKDOWN)
         else:
