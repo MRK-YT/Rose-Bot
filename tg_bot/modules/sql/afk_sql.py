@@ -74,7 +74,7 @@ def toggle_afk(user_id, reason=""):
             curr = AFK(user_id, reason, True)
         elif curr.is_afk:
             curr.is_afk = False
-        elif not curr.is_afk:
+        else:
             curr.is_afk = True
         SESSION.add(curr)
         SESSION.commit()

@@ -16,11 +16,7 @@ AFK_REPLY_GROUP = 8
 @run_async
 def afk(bot: Bot, update: Update):
     args = update.effective_message.text.split(None, 1)
-    if len(args) >= 2:
-        reason = args[1]
-    else:
-        reason = ""
-
+    reason = args[1] if len(args) >= 2 else ""
     sql.set_afk(update.effective_user.id, reason)
     update.effective_message.reply_text("{} is now AFK!".format(update.effective_user.first_name))
 
