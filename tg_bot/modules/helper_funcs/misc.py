@@ -22,19 +22,21 @@ def split_message(msg: str) -> List[str]:
     if len(msg) < MAX_MESSAGE_LENGTH:
         return [msg]
 
-    lines = msg.splitlines(True)
-    small_msg = ""
-    result = []
-    for line in lines:
-        if len(small_msg) + len(line) < MAX_MESSAGE_LENGTH:
-            small_msg += line
+    else:
+        lines = msg.splitlines(True)
+        small_msg = ""
+        result = []
+        for line in lines:
+            if len(small_msg) + len(line) < MAX_MESSAGE_LENGTH:
+                small_msg += line
+            else:
+                result.append(small_msg)
+                small_msg = line
         else:
+            # Else statement at the end of the for loop, so append the leftover string.
             result.append(small_msg)
-            small_msg = line
-    # Else statement at the end of the for loop, so append the leftover string.
-    result.append(small_msg)
 
-    return result
+        return result
 
 
 def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
@@ -54,11 +56,17 @@ def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
     pairs = [modules[i * 3 : (i + 1) * 3] for i in range((len(modules) + 3 - 1) // 3)]
     round_num = len(modules) / 3
     calc = len(modules) - round(round_num)
-    if calc in [1, 2]:
+    if calc == 1:
         pairs.append((modules[-1],))
+    elif calc == 2:
+        pairs.append((modules[-1],))
+
+
 #    pairs = list(zip(modules[::2], modules[1::2]))
+
 #    if len(modules) % 2 == 1:
 #        pairs.append((modules[-1],))
+
 #    max_num_pages = ceil(len(pairs) / 7)
 #   modulo_page = page_n % max_num_pages
 
@@ -110,12 +118,14 @@ def build_keyboard(buttons):
 
 
 def revert_buttons(buttons):
-    return "".join(
-        "\n[{}](buttonurl://{}:same)".format(btn.name, btn.url)
-        if btn.same_line
-        else "\n[{}](buttonurl://{})".format(btn.name, btn.url)
-        for btn in buttons
-    )
+    res = ""
+    for btn in buttons:
+        if btn.same_line:
+            res += "\n[{}](buttonurl://{}:same)".format(btn.name, btn.url)
+        else:
+            res += "\n[{}](buttonurl://{})".format(btn.name, btn.url)
+
+    return res
 
 
 def is_module_loaded(name):

@@ -1,7 +1,7 @@
 {
-  "name": "MT-Rose-Bot-Model",
+  "name": "Kochubot",
   "description": "Telegram's sassiest group manager. Modular Telegram group management bot!",
-  "logo": "https://telegra.ph/file/9e831d15da94deb56ef4c.jpg",
+  "logo": "https://telegra.ph/file/1925c7a2f601539ccde7a.png",
   "keywords": [
     "telegram",
     "best",
@@ -12,7 +12,7 @@
     "modular",
     "productivity"
   ],
-  "repository": "https://github.com/MRK-YT/MT-Rose-Bot-Model",
+  "repository": "https://github.com/jithumon/tgbot",
   "env": {
     "ENV": {
       "description": "Setting this to ANYTHING will enable env variables. But, you need to understand the code to know what to set here!",
@@ -23,11 +23,11 @@
     },
     "OWNER_ID": {
       "description": "An integer of consisting of your owner ID",
-      "value": "1444388846"
+      "value": "20516707"
     },
     "OWNER_USERNAME": {
       "description": "Your username",
-      "value": "DARK_ANGEL_1234"
+      "value": "SonOfLars"
     },
     "WEBHOOK": {
       "description": "Setting this to ANYTHING will enable webhooks when in env mode messages",
@@ -54,7 +54,7 @@
     },
     "DONATION_LINK": {
       "description": "Optional: link where you would like to receive donations.",
-      "value": "https://www.paypal.me/"
+      "value": "https://www.paypal.me/PaulSonOfLars"
     },
     "PORT": {
       "description": "Port to use for your webhooks",
@@ -79,7 +79,7 @@
     },
     "BMERNU_SCUT_SRELFTI": {
       "description": "please set this value as 0",
-      "value": "2000",
+      "value": "1",
       "required": false
     }
   },

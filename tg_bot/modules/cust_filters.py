@@ -29,7 +29,7 @@ def list_handlers(bot: Bot, update: Update):
     user = update.effective_user  # type: Optional[User]
 
     conn = connected(bot, update, chat, user.id, need_admin=False)
-    if conn != False:
+    if not conn == False:
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
         filter_list = f"*Filters in {chat_name}:*\n"
@@ -59,7 +59,7 @@ def list_handlers(bot: Bot, update: Update):
         else:
             filter_list += entry
 
-    if filter_list != BASIC_FILTER_STRING:
+    if not filter_list == BASIC_FILTER_STRING:
         update.effective_message.reply_text(filter_list, parse_mode=telegram.ParseMode.MARKDOWN)
 
 
@@ -72,12 +72,16 @@ def filters(bot: Bot, update: Update):
     args = msg.text.split(None, 1)  # use python's maxsplit to separate Cmd, keyword, and reply_text
 
     conn = connected(bot, update, chat, user.id)
-    if conn != False:
+    if not conn == False:
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
     else:
         chat_id = update.effective_chat.id
-        chat_name = "local filters" if chat.type == "private" else chat.title
+        if chat.type == "private":
+            chat_name = "local filters"
+        else:
+            chat_name = chat.title
+
     if len(args) < 2:
         return
 
@@ -89,8 +93,8 @@ def filters(bot: Bot, update: Update):
                 f"You currently have {total_fs} filters. "
                 f"The maximum number of filters allowed is {BMERNU_SCUT_SRELFTI}. "
                 "You need to delete some filters "
-                "Content @Mo_Tech_Group"
-                "Bot Update @Mo_Tech_YT"
+                "before being allowed to add more "
+                "or use @kochufilterbot for unlimited filters."
             )
             return
 
@@ -187,12 +191,16 @@ def stop_filter(bot: Bot, update: Update):
     args = update.effective_message.text.split(None, 1)
 
     conn = connected(bot, update, chat, user.id)
-    if conn != False:
+    if not conn == False:
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
     else:
         chat_id = chat.id
-        chat_name = "local notes" if chat.type == "private" else chat.title
+        if chat.type == "private":
+            chat_name = "local notes"
+        else:
+            chat_name = chat.title
+
     if len(args) < 2:
         return
 
@@ -234,17 +242,52 @@ def reply_filter(bot: Bot, update: Update):
             if len(buttons) > 0:
                 keyboard = InlineKeyboardMarkup(build_keyboard(buttons))
             if filt.is_sticker:
-                message.reply_sticker(filt.reply, reply_markup=keyboard)
+                message.reply_sticker(
+                    filt.reply,
+                    reply_markup=keyboard,
+                    api_kwargs={"allow_sending_without_reply": True}
+                )
             elif filt.is_document:
-                message.reply_document(filt.reply, caption=media_caption, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard)
+                message.reply_document(
+                    filt.reply,
+                    caption=media_caption,
+                    parse_mode=ParseMode.MARKDOWN,
+                    reply_markup=keyboard,
+                    api_kwargs={"allow_sending_without_reply": True}
+                )
             elif filt.is_image:
-                message.reply_photo(filt.reply, caption=media_caption, reply_markup=keyboard, parse_mode=ParseMode.MARKDOWN)
+                message.reply_photo(
+                    filt.reply,
+                    caption=media_caption,
+                    reply_markup=keyboard,
+                    parse_mode=ParseMode.MARKDOWN,
+                    api_kwargs={"allow_sending_without_reply": True}
+                )
             elif filt.is_audio:
-                message.reply_audio(filt.reply, caption=media_caption, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard)
+                message.reply_audio(
+                    filt.reply,
+                    caption=media_caption,
+                    parse_mode=ParseMode.MARKDOWN,
+                    reply_markup=keyboard,
+                    api_kwargs={"allow_sending_without_reply": True}
+                )
             elif filt.is_voice:
-                message.reply_voice(filt.reply, caption=media_caption, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard)
+                message.reply_voice(
+                    filt.reply,
+                    caption=media_caption,
+                    parse_mode=ParseMode.MARKDOWN,
+                    reply_markup=keyboard,
+                    api_kwargs={"allow_sending_without_reply": True}
+                )
             elif filt.is_video:
-                message.reply_video(filt.reply, caption=media_caption, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard)
+                message.reply_video(
+                    filt.reply,
+                    caption=media_caption,
+                    parse_mode=ParseMode.MARKDOWN,
+                    reply_markup=keyboard,
+                    api_kwargs={"allow_sending_without_reply": True}
+                )
+
             elif filt.has_markdown:
                 keyb = build_keyboard(buttons)
                 keyboard = InlineKeyboardMarkup(keyb)
@@ -258,14 +301,14 @@ def reply_filter(bot: Bot, update: Update):
                                        disable_web_page_preview=should_preview_disabled,
                                        reply_markup=keyboard)
                 except BadRequest as excp:
-                    if excp.message == "Replied message not found":
-                        bot.send_message(chat.id, filt.reply, parse_mode=ParseMode.MARKDOWN,
-                                         disable_web_page_preview=True,
-                                         reply_markup=keyboard)
-                    elif excp.message == "Unsupported url protocol":
+                    if excp.message == "Unsupported url protocol":
                         message.reply_text("You seem to be trying to use an unsupported url protocol. Telegram "
                                            "doesn't support buttons for some protocols, such as tg://. Please try "
                                            "again, or ask in @KeralaBots for help.")
+                    elif excp.message == "Replied message not found":
+                        bot.send_message(chat.id, filt.reply, parse_mode=ParseMode.MARKDOWN,
+                                         disable_web_page_preview=True,
+                                         reply_markup=keyboard)
                     else:
                         message.reply_text("This note could not be sent, as it is incorrectly formatted. Ask in "
                                            "@KeralaBots if you can't figure out why!")

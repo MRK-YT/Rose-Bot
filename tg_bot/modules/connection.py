@@ -21,15 +21,18 @@ from tg_bot.modules.keyboard import keyboard
 @run_async
 def allow_connections(bot: Bot, update: Update, args: List[str]) -> str:
     chat = update.effective_chat  # type: Optional[Chat]
-    if chat.type != chat.PRIVATE and args:
-        var = args[0]
-        print(var)
-        if (var == "no"):
-            sql.set_allow_connect_to_chat(chat.id, False)
-            update.effective_message.reply_text("Disabled connections to this chat for users")
-        elif(var == "yes"):
-            sql.set_allow_connect_to_chat(chat.id, True)
-            update.effective_message.reply_text("Enabled connections to this chat for users")
+    if chat.type != chat.PRIVATE:
+        if len(args) >= 1:
+            var = args[0]
+            print(var)
+            if (var == "no"):
+                sql.set_allow_connect_to_chat(chat.id, False)
+                update.effective_message.reply_text("Disabled connections to this chat for users")
+            elif(var == "yes"):
+                sql.set_allow_connect_to_chat(chat.id, True)
+                update.effective_message.reply_text("Enabled connections to this chat for users")
+            else:
+                update.effective_message.reply_text("Please enter on/yes/off/no in group!")
         else:
             update.effective_message.reply_text("Please enter on/yes/off/no in group!")
     else:
@@ -118,22 +121,26 @@ def disconnect_chat(bot, update):
 
 
 def connected(bot, update, chat, user_id, need_admin=True):
-    if chat.type != chat.PRIVATE or not sql.get_connected_chat(user_id):
-        return False
-    conn_id = sql.get_connected_chat(user_id).chat_id
-    if (bot.get_chat_member(conn_id, user_id).status in ('administrator', 'creator') or 
+    if chat.type == chat.PRIVATE and sql.get_connected_chat(user_id):
+        conn_id = sql.get_connected_chat(user_id).chat_id
+        if (bot.get_chat_member(conn_id, user_id).status in ('administrator', 'creator') or 
                                      (sql.allow_connect_to_chat(connect_chat) == True) and 
                                      bot.get_chat_member(user_id, update.effective_message.from_user.id).status in ('member')) or (
                                      user_id in SUDO_USERS):
-        if need_admin != True:
-            return conn_id
-        if bot.get_chat_member(conn_id, update.effective_message.from_user.id).status in ('administrator', 'creator') or user_id in SUDO_USERS:
-            return conn_id
-        update.effective_message.reply_text("You need to be a admin in a connected group!")
+            if need_admin == True:
+                if bot.get_chat_member(conn_id, update.effective_message.from_user.id).status in ('administrator', 'creator') or user_id in SUDO_USERS:
+                    return conn_id
+                else:
+                    update.effective_message.reply_text("You need to be a admin in a connected group!")
+                    exit(1)
+            else:
+                return conn_id
+        else:
+            update.effective_message.reply_text("Group changed rights connection or you are not admin anymore.\nI'll disconnect you.")
+            disconnect_chat(bot, update)
+            exit(1)
     else:
-        update.effective_message.reply_text("Group changed rights connection or you are not admin anymore.\nI'll disconnect you.")
-        disconnect_chat(bot, update)
-    exit(1)
+        return False
 
 
 

@@ -79,32 +79,35 @@ def markdown_parser(txt: str, entities: Dict[MessageEntity, str] = None, offset:
         start = ent.offset + offset  # start of entity
         end = ent.offset + offset + ent.length - 1  # end of entity
 
-        if ent.type not in ("code", "url", "text_link"):
+        # we only care about code, url, text links
+        if ent.type in ("code", "url", "text_link"):
+            # count emoji to switch counter
+            count = _calc_emoji_offset(txt[:start])
+            start -= count
+            end -= count
+
+            # URL handling -> do not escape if in [](), escape otherwise.
+            if ent.type == "url":
+                if any(match.start(1) <= start and end <= match.end(1) for match in LINK_REGEX.finditer(txt)):
+                    continue
+                # else, check the escapes between the prev and last and forcefully escape the url to avoid mangling
+                else:
+                    # TODO: investigate possible offset bug when lots of emoji are present
+                    res += _selective_escape(txt[prev:start] or "") + escape_markdown(ent_text)
+
+            # code handling
+            elif ent.type == "code":
+                res += _selective_escape(txt[prev:start]) + '`' + ent_text + '`'
+
+            # handle markdown/html links
+            elif ent.type == "text_link":
+                res += _selective_escape(txt[prev:start]) + "[{}]({})".format(ent_text, ent.url)
+
+            end += 1
+
+        # anything else
+        else:
             continue
-
-        # count emoji to switch counter
-        count = _calc_emoji_offset(txt[:start])
-        start -= count
-        end -= count
-
-        # URL handling -> do not escape if in [](), escape otherwise.
-        if ent.type == "url":
-            if any(match.start(1) <= start and end <= match.end(1) for match in LINK_REGEX.finditer(txt)):
-                continue
-            # else, check the escapes between the prev and last and forcefully escape the url to avoid mangling
-            else:
-                # TODO: investigate possible offset bug when lots of emoji are present
-                res += _selective_escape(txt[prev:start] or "") + escape_markdown(ent_text)
-
-        # code handling
-        elif ent.type == "code":
-            res += _selective_escape(txt[prev:start]) + '`' + ent_text + '`'
-
-        # handle markdown/html links
-        elif ent.type == "text_link":
-            res += _selective_escape(txt[prev:start]) + "[{}]({})".format(ent_text, ent.url)
-
-        end += 1
 
         prev = end
 
@@ -135,7 +138,8 @@ def button_markdown_parser(txt: str, entities: Dict[MessageEntity, str] = None, 
         else:
             note_data += markdown_note[prev:to_check]
             prev = match.start(1) - 1
-    note_data += markdown_note[prev:]
+    else:
+        note_data += markdown_note[prev:]
 
     return note_data, buttons
 
@@ -185,31 +189,33 @@ START_CHAR = ('\'', '"', SMART_OPEN)
 
 
 def split_quotes(text: str) -> List:
-    if not any(text.startswith(char) for char in START_CHAR):
-        return text.split(None, 1)
-    counter = 1  # ignore first char -> is some kind of quote
-    while counter < len(text):
-        if text[counter] == "\\":
+    if any(text.startswith(char) for char in START_CHAR):
+        counter = 1  # ignore first char -> is some kind of quote
+        while counter < len(text):
+            if text[counter] == "\\":
+                counter += 1
+            elif text[counter] == text[0] or (text[0] == SMART_OPEN and text[counter] == SMART_CLOSE):
+                break
             counter += 1
-        elif text[counter] == text[0] or (text[0] == SMART_OPEN and text[counter] == SMART_CLOSE):
-            break
-        counter += 1
+        else:
+            return text.split(None, 1)
+
+        # 1 to avoid starting quote, and counter is exclusive so avoids ending
+        key = remove_escapes(text[1:counter].strip())
+        # index will be in range, or `else` would have been executed and returned
+        rest = text[counter + 1:].strip()
+        if not key:
+            key = text[0] + text[0]
+        return list(filter(None, [key, rest]))
     else:
         return text.split(None, 1)
 
-    # 1 to avoid starting quote, and counter is exclusive so avoids ending
-    key = remove_escapes(text[1:counter].strip())
-    # index will be in range, or `else` would have been executed and returned
-    rest = text[counter + 1:].strip()
-    if not key:
-        key = text[0] + text[0]
-    return list(filter(None, [key, rest]))
-
 
 def remove_escapes(text: str) -> str:
+    counter = 0
     res = ""
     is_escaped = False
-    for counter in range(len(text)):
+    while counter < len(text):
         if is_escaped:
             res += text[counter]
             is_escaped = False
@@ -217,6 +223,7 @@ def remove_escapes(text: str) -> str:
             is_escaped = True
         else:
             res += text[counter]
+        counter += 1
     return res
 
 

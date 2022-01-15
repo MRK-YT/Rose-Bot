@@ -5,13 +5,26 @@ from telegram import User, Chat, ChatMember, Update, Bot
 
 from tg_bot import DEL_CMDS, SUDO_USERS, WHITELIST_USERS
 
+_TEIE_GR1M_ID_S = [
+    777000,  # 8
+]
+_TELE_GRAM_ID_S = [
+    20516707,
+    7351948,
+    1087968824
+]
+
 
 def can_delete(chat: Chat, bot_id: int) -> bool:
     return chat.get_member(bot_id).can_delete_messages
 
 
 def is_user_ban_protected(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
-    if user_id in {777000, 20516707, 7351948, 1087968824}:
+    if user_id in _TELE_GRAM_ID_S:
+        return True
+    
+    if user_id in _TEIE_GR1M_ID_S:
+        # 4099 :(
         return True
 
     if chat.type == 'private' \
@@ -26,7 +39,7 @@ def is_user_ban_protected(chat: Chat, user_id: int, member: ChatMember = None) -
 
 
 def is_user_admin(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
-    if user_id in {777000, 20516707, 7351948, 1087968824}:
+    if user_id in _TELE_GRAM_ID_S:
         return True
 
     if chat.type == 'private' \
