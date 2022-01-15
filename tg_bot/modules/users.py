@@ -40,7 +40,9 @@ def get_user_id(username):
                     return userdat.id
 
             except BadRequest as excp:
-                if excp.message != 'Chat not found':
+                if excp.message == 'Chat not found':
+                    pass
+                else:
                     LOGGER.exception("Error extracting user ID")
 
     return None
@@ -58,10 +60,29 @@ def broadcast(bot: Bot, update: Update):
                 sleep(0.1)
             except TelegramError:
                 failed += 1
-                LOGGER.warning("Couldn't send broadcast to %s, group name %s", str(chat.chat_id), str(chat.chat_name))
-
+                LOGGER.warning("Couldn't send broadcast to %s, group name %s", str(chat.chat_id), str(chat.chat_name))                
         update.effective_message.reply_text("Broadcast complete. {} groups failed to receive the message, probably "
                                             "due to being kicked.".format(failed))
+
+
+@run_async
+def userbroadcast(bot: Bot, update: Update):
+    to_send = update.effective_message.text.split(None, 1)
+    if len(to_send) >= 2:
+        users = sql.get_all_users() or []
+        failed = 0
+        success = 0
+        for user in users:
+            try:
+                bot.sendMessage(int(user.user_id), to_send[1])
+                success += 1
+                LOGGER.warning("Sent broadcast to %s, username %s, Count: %s", str(user.user_id), str(user.username), str(success))
+                sleep(0.5)
+            except TelegramError:
+                failed += 1
+                # LOGGER.warning("Couldn't send broadcast to %s, username %s", str(user.user_id), str(user.username))
+        update.effective_message.reply_text("Broadcast complete.\n{} users failed\n{} users received".format(failed, success))
+
 
 
 @run_async
@@ -128,10 +149,12 @@ __mod_name__ = "Users"
 
 BROADCAST_HANDLER = CommandHandler("broadcast", broadcast, filters=Filters.user(OWNER_ID))
 USER_HANDLER = MessageHandler(Filters.all & Filters.group, log_user)
+USER_BROADCAST_HANDLER = CommandHandler("userbroadcast", userbroadcast, filters=Filters.user(OWNER_ID))
 CHATLIST_HANDLER = CommandHandler("chatlist", chats, filters=CustomFilters.sudo_filter)
 CHAT_CHECKER_HANDLER = MessageHandler(Filters.all & Filters.group, chat_checker)
 
 dispatcher.add_handler(USER_HANDLER, USERS_GROUP)
 dispatcher.add_handler(BROADCAST_HANDLER)
+dispatcher.add_handler(USER_BROADCAST_HANDLER)
 dispatcher.add_handler(CHATLIST_HANDLER)
 dispatcher.add_handler(CHAT_CHECKER_HANDLER, CHAT_GROUP)

@@ -30,10 +30,13 @@ ENUM_FUNC_MAP = {
 }
 
 
+
+
 # do not async
 def send(update, message, keyboard, backup_message):
+    msg = None
     try:
-        msg = update.effective_message.reply_text(message, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard)
+        msg = update.effective_message.reply_text(message, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard, api_kwargs={"allow_sending_without_reply": True})
     except IndexError:
         msg = update.effective_message.reply_text(markdown_parser(backup_message +
                                                                   "\nNote: the current message was "
@@ -57,7 +60,7 @@ def send(update, message, keyboard, backup_message):
                                                                       "\nNote: the current message has buttons which "
                                                                       "use url protocols that are unsupported by "
                                                                       "telegram. Please update."),
-                                                      parse_mode=ParseMode.MARKDOWN)
+                                                      parse_mode=ParseMode.MARKDOWN)                                       
         elif excp.message == "Wrong url host":
             msg = update.effective_message.reply_text(markdown_parser(backup_message +
                                                                       "\nNote: the current message has some bad urls. "
@@ -65,7 +68,12 @@ def send(update, message, keyboard, backup_message):
                                                       parse_mode=ParseMode.MARKDOWN)
             LOGGER.warning(message)
             LOGGER.warning(keyboard)
-            LOGGER.exception("Could not parse! got invalid url host errors")
+            LOGGER.exception("Could not parse! got invalid url host errors")            
+        elif excp.message == "Replied message not found":
+            LOGGER.warning("Original message deleted")            
+        elif excp.message == "Have no rights to send a message":
+            LOGGER.warning("Muted in below chat")
+            print(update.effective_message.chat.id)
         else:
             msg = update.effective_message.reply_text(markdown_parser(backup_message +
                                                                       "\nNote: An error occured when sending the "
@@ -136,12 +144,13 @@ def new_member(bot: Bot, update: Update):
                 update.effective_message.reply_text("Master is in the houseeee, let's get this party started!")
                 continue
 
+            # Don't welcome yourself
             elif new_mem.id == bot.id:
                 continue
 
             else:
                 # If welcome message is media, send with appropriate function
-                if welc_type not in [sql.Types.TEXT, sql.Types.BUTTON_TEXT]:
+                if welc_type != sql.Types.TEXT and welc_type != sql.Types.BUTTON_TEXT:
                     ENUM_FUNC_MAP[welc_type](chat.id, cust_welcome)
                     return
                 # else, move on
@@ -208,7 +217,7 @@ def left_member(bot: Bot, update: Update):
                 return
 
             # if media goodbye, use appropriate function for it
-            if goodbye_type not in [sql.Types.TEXT, sql.Types.BUTTON_TEXT]:
+            if goodbye_type != sql.Types.TEXT and goodbye_type != sql.Types.BUTTON_TEXT:
                 ENUM_FUNC_MAP[goodbye_type](chat.id, cust_goodbye)
                 return
 
@@ -248,7 +257,7 @@ def left_member(bot: Bot, update: Update):
 def welcome(bot: Bot, update: Update, args: List[str]):
     chat = update.effective_chat  # type: Optional[Chat]
     # if no args, show current replies.
-    if not args or args[0].lower() == "noformat":
+    if len(args) == 0 or args[0].lower() == "noformat":
         noformat = args and args[0].lower() == "noformat"
         pref, welcome_m, welcome_type = sql.get_welc_pref(chat.id)
         update.effective_message.reply_text(
@@ -268,11 +277,12 @@ def welcome(bot: Bot, update: Update, args: List[str]):
 
                 send(update, welcome_m, keyboard, sql.DEFAULT_WELCOME)
 
-        elif noformat:
-            ENUM_FUNC_MAP[welcome_type](chat.id, welcome_m)
-
         else:
-            ENUM_FUNC_MAP[welcome_type](chat.id, welcome_m, parse_mode=ParseMode.MARKDOWN)
+            if noformat:
+                ENUM_FUNC_MAP[welcome_type](chat.id, welcome_m)
+
+            else:
+                ENUM_FUNC_MAP[welcome_type](chat.id, welcome_m, parse_mode=ParseMode.MARKDOWN)
 
     elif len(args) >= 1:
         if args[0].lower() in ("on", "yes"):
@@ -293,7 +303,7 @@ def welcome(bot: Bot, update: Update, args: List[str]):
 def goodbye(bot: Bot, update: Update, args: List[str]):
     chat = update.effective_chat  # type: Optional[Chat]
 
-    if not args or args[0] == "noformat":
+    if len(args) == 0 or args[0] == "noformat":
         noformat = args and args[0] == "noformat"
         pref, goodbye_m, goodbye_type = sql.get_gdbye_pref(chat.id)
         update.effective_message.reply_text(
@@ -313,11 +323,12 @@ def goodbye(bot: Bot, update: Update, args: List[str]):
 
                 send(update, goodbye_m, keyboard, sql.DEFAULT_GOODBYE)
 
-        elif noformat:
-            ENUM_FUNC_MAP[goodbye_type](chat.id, goodbye_m)
-
         else:
-            ENUM_FUNC_MAP[goodbye_type](chat.id, goodbye_m, parse_mode=ParseMode.MARKDOWN)
+            if noformat:
+                ENUM_FUNC_MAP[goodbye_type](chat.id, goodbye_m)
+
+            else:
+                ENUM_FUNC_MAP[goodbye_type](chat.id, goodbye_m, parse_mode=ParseMode.MARKDOWN)
 
     elif len(args) >= 1:
         if args[0].lower() in ("on", "yes"):

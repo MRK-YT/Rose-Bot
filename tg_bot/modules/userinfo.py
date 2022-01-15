@@ -17,7 +17,11 @@ def about_me(bot: Bot, update: Update, args: List[str]):
     message = update.effective_message  # type: Optional[Message]
     user_id = extract_user(message, args)
 
-    user = bot.get_chat(user_id) if user_id else message.from_user
+    if user_id:
+        user = bot.get_chat(user_id)
+    else:
+        user = message.from_user
+
     info = sql.get_user_me_info(user.id)
 
     if info:
@@ -50,7 +54,11 @@ def about_bio(bot: Bot, update: Update, args: List[str]):
     message = update.effective_message  # type: Optional[Message]
 
     user_id = extract_user(message, args)
-    user = bot.get_chat(user_id) if user_id else message.from_user
+    if user_id:
+        user = bot.get_chat(user_id)
+    else:
+        user = message.from_user
+
     info = sql.get_user_bio(user.id)
 
     if info:

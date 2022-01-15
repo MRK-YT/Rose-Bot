@@ -38,7 +38,7 @@ def get(bot, update, notename, show_none=True, no_format=False):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     conn = connected(bot, update, chat, user.id, need_admin=False)
-    if conn != False:
+    if not conn == False:
         chat_id = conn
         send_id = user.id
     else:
@@ -60,22 +60,24 @@ def get(bot, update, notename, show_none=True, no_format=False):
                 try:
                     bot.forward_message(chat_id=update.effective_chat.id, from_chat_id=MESSAGE_DUMP, message_id=note.value)
                 except BadRequest as excp:
-                    if excp.message != "Message to forward not found":
+                    if excp.message == "Message to forward not found":
+                        message.reply_text("This message seems to have been lost - I'll remove it "
+                                           "from your notes list.")
+                        sql.rm_note(chat_id, notename)
+                    else:
                         raise
-                    message.reply_text("This message seems to have been lost - I'll remove it "
-                                       "from your notes list.")
-                    sql.rm_note(chat_id, notename)
             else:
                 try:
                     bot.forward_message(chat_id=update.effective_chat.id, from_chat_id=chat_id, message_id=note.value)
                 except BadRequest as excp:
-                    if excp.message != "Message to forward not found":
+                    if excp.message == "Message to forward not found":
+                        message.reply_text("Looks like the original sender of this note has deleted "
+                                           "their message - sorry! Get your bot admin to start using a "
+                                           "message dump to avoid this. I'll remove this note from "
+                                           "your saved notes.")
+                        sql.rm_note(chat_id, notename)
+                    else:
                         raise
-                    message.reply_text("Looks like the original sender of this note has deleted "
-                                       "their message - sorry! Get your bot admin to start using a "
-                                       "message dump to avoid this. I'll remove this note from "
-                                       "your saved notes.")
-                    sql.rm_note(chat_id, notename)
         else:
             text = note.value
             keyb = []
@@ -115,7 +117,7 @@ def get(bot, update, notename, show_none=True, no_format=False):
                     sql.rm_note(chat_id, notename)
                 else:
                     message.reply_text("This note could not be sent, as it is incorrectly formatted. Ask in "
-                                       "@MarieSupport if you can't figure out why!")
+                                       "@keralabots if you can't figure out why!")
                     LOGGER.exception("Could not parse message #%s in chat %s", notename, str(chat_id))
                     LOGGER.warning("Message was: %s", str(note.value))
         return
@@ -147,12 +149,16 @@ def save(bot: Bot, update: Update):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     conn = connected(bot, update, chat, user.id)
-    if conn != False:
+    if not conn == False:
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
     else:
         chat_id = update.effective_chat.id
-        chat_name = "local notes" if chat.type == "private" else chat.title
+        if chat.type == "private":
+            chat_name = "local notes"
+        else:
+            chat_name = chat.title
+
     msg = update.effective_message  # type: Optional[Message]
 
     note_name, text, data_type, content, buttons = get_note_type(msg)
@@ -190,13 +196,17 @@ def clear(bot: Bot, update: Update, args: List[str]):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     conn = connected(bot, update, chat, user.id)
-    if conn != False:
+    if not conn == False:
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
     else:
         chat_id = update.effective_chat.id
-        chat_name = "local notes" if chat.type == "private" else chat.title
-    if args:
+        if chat.type == "private":
+            chat_name = "local notes"
+        else:
+            chat_name = chat.title
+
+    if len(args) >= 1:
         notename = args[0]
 
         if sql.rm_note(chat_id, notename):
@@ -211,10 +221,10 @@ def list_notes(bot: Bot, update: Update):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     conn = connected(bot, update, chat, user.id, need_admin=False)
-    if conn != False:
+    if not conn == False:
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
-        msg = "*Notes in {}:*\n"
+        msg = "*Notes in {}:*\n".format(chat_name)
     else:
         chat_id = update.effective_chat.id
         if chat.type == "private":
@@ -222,7 +232,7 @@ def list_notes(bot: Bot, update: Update):
             msg = "*Local Notes:*\n"
         else:
             chat_name = chat.title
-            msg = "*Notes in {}:*\n"
+            msg = "*Notes in {}:*\n".format(chat_name)
 
     note_list = sql.get_all_chat_notes(chat_id)
 
@@ -236,7 +246,7 @@ def list_notes(bot: Bot, update: Update):
     if msg == "*Notes in chat:*\n":
         update.effective_message.reply_text("No notes in this chat!")
 
-    elif msg != '':
+    elif len(msg) != 0:
         update.effective_message.reply_text(msg, parse_mode=ParseMode.MARKDOWN)
 
 

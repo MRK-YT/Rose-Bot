@@ -84,7 +84,7 @@ def warn(user: User, chat: Chat, reason: str, message: Message, warner: User = N
     try:
         message.reply_text(reply, reply_markup=keyboard, parse_mode=ParseMode.HTML)
     except BadRequest as excp:
-        if excp.message == "Reply message not found":
+        if excp.message == "Replied message not found":
             # Do not reply
             message.reply_text(reply, reply_markup=keyboard, parse_mode=ParseMode.HTML, quote=False)
         else:
@@ -209,12 +209,13 @@ def add_warn_filter(bot: Bot, update: Update):
 
     extracted = split_quotes(args[1])
 
-    if len(extracted) < 2:
-        return
+    if len(extracted) >= 2:
+        # set trigger -> lower, so as to avoid adding duplicate filters with different cases
+        keyword = extracted[0].lower()
+        content = extracted[1]
 
-    # set trigger -> lower, so as to avoid adding duplicate filters with different cases
-    keyword = extracted[0].lower()
-    content = extracted[1]
+    else:
+        return
 
     # Note: perhaps handlers can be removed somehow using sql.get_chat_filters
     for handler in dispatcher.handlers.get(WARN_HANDLER_GROUP, []):
@@ -277,7 +278,7 @@ def list_warn_filters(bot: Bot, update: Update):
         else:
             filter_list += entry
 
-    if filter_list != CURRENT_WARNING_FILTER_STRING:
+    if not filter_list == CURRENT_WARNING_FILTER_STRING:
         update.effective_message.reply_text(filter_list, parse_mode=ParseMode.HTML)
 
 
@@ -376,7 +377,7 @@ def __stats__():
 
 def __import_data__(chat_id, data):
     for user_id, count in data.get('warns', {}).items():
-        for _ in range(int(count)):
+        for x in range(int(count)):
             sql.warn_user(user_id, chat_id)
 
 
