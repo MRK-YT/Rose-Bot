@@ -1,6 +1,6 @@
 import threading
 
-from sqlalchemy import Column, UnicodeText, Boolean, Integer
+from sqlalchemy import Column, UnicodeText, Boolean, Integer, BigInteger
 
 from tg_bot.modules.sql import BASE, SESSION
 
@@ -8,7 +8,7 @@ from tg_bot.modules.sql import BASE, SESSION
 class AFK(BASE):
     __tablename__ = "afk_users"
 
-    user_id = Column(Integer, primary_key=True)
+    user_id = Column(BigInteger, primary_key=True)
     is_afk = Column(Boolean)
     reason = Column(UnicodeText)
 
@@ -74,7 +74,7 @@ def toggle_afk(user_id, reason=""):
             curr = AFK(user_id, reason, True)
         elif curr.is_afk:
             curr.is_afk = False
-        else:
+        elif not curr.is_afk:
             curr.is_afk = True
         SESSION.add(curr)
         SESSION.commit()

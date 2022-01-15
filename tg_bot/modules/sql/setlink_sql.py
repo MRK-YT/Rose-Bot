@@ -35,7 +35,10 @@ def set_link(chat_id, links_text):
 
 def get_link(chat_id):
     chat_links = SESSION.query(Links).get(str(chat_id))
-    ret = chat_links.chat_links if chat_links else ""
+    ret = ""
+    if chat_links:
+        ret = chat_links.chat_links
+
     SESSION.close()
     return ret
 

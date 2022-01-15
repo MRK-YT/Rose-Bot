@@ -1,6 +1,6 @@
 import threading
 
-from sqlalchemy import Column, Integer, UnicodeText, String, ForeignKey, UniqueConstraint, func
+from sqlalchemy import Column, BigInteger, Integer, UnicodeText, String, ForeignKey, UniqueConstraint, func
 
 from tg_bot import dispatcher
 from tg_bot.modules.sql import BASE, SESSION
@@ -8,7 +8,7 @@ from tg_bot.modules.sql import BASE, SESSION
 
 class Users(BASE):
     __tablename__ = "users"
-    user_id = Column(Integer, primary_key=True)
+    user_id = Column(BigInteger, primary_key=True)
     username = Column(UnicodeText)
 
     def __init__(self, user_id, username=None):
@@ -41,7 +41,7 @@ class ChatMembers(BASE):
                              onupdate="CASCADE",
                              ondelete="CASCADE"),
                   nullable=False)
-    user = Column(Integer,
+    user = Column(BigInteger,
                   ForeignKey("users.user_id",
                              onupdate="CASCADE",
                              ondelete="CASCADE"),
@@ -123,6 +123,11 @@ def get_chat_members(chat_id):
     finally:
         SESSION.close()
 
+def get_all_users():
+    try:
+        return SESSION.query(Users).all()
+    finally:
+        SESSION.close()
 
 def get_all_chats():
     try:
