@@ -19,9 +19,9 @@ from tg_bot.modules.helper_funcs.misc import paginate_modules
 
 PM_START_TEXT = """
 
-Hey there! My name is Famegfx - I'm here to help you manage your groups! Hit /help to find out more about how to use me to my full potential.
+Hey there! My name is Samantha  - I'm here to help you manage your groups! Hit /help to find out more about how to use me to my full potential.
 
-Join my channel or @men_of_culture_group to get information on all the latest updates.
+Join my channel or @jehrilla_support to get information on all the latest updates.
 
 Use the /privacy command to view the privacy policy, and interact with your data.
 """
@@ -43,10 +43,10 @@ And the following:
 """.format(dispatcher.bot.first_name, "" if not ALLOW_EXCL else "\nAll commands can either be used with / or !.\n")
 
 DONATE_STRING = """Heya, glad to hear you want to donate!
-It took lots of work for [my creator](t.me/SonOfLars) to get me to where I am now, and every donation helps \
+It took lots of work for [owner](t.me/jehrilla_user) to get me to where I am now, and every donation helps \
 motivate him to make me even better. All the donation money will go to a better VPS to host me, and/or beer \
 (see his bio!). He's just a poor student, so every little helps!
-There are two ways of paying him; [PayPal](paypal.me/PaulSonOfLars), or [Monzo](monzo.me/paulnionvestergaardlarsen)."""
+There are two ways of paying him; [testing](t.me/jehrilla_user), or [Don't pay](t.me/jehrilla_user)."""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -143,12 +143,12 @@ def start(bot: Bot, update: Update, args: List[str]):
                 PM_START_TEXT.format(escape_markdown(first_name), escape_markdown(bot.first_name), OWNER_ID),
 
                 parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton(text="🎉 Add me to your group", url="t.me/{}?startgroup=true".format(bot.username)),  InlineKeyboardButton(text="🤖 Make Own Admin Bot", url="https://youtu.be/W6CLKrehy6w")],
-                     [InlineKeyboardButton(text="👥 Support Group", url="https://t.me/Mo_Tech_Group"), InlineKeyboardButton(text="🔔 Update Channel", url="https://t.me/Mo_Tech_YT")],
-                     [InlineKeyboardButton(text="👨‍💻 Make", url="https://youtu.be/wKL90i3cjPw"), InlineKeyboardButton(text="🛠 Help", url="https://t.me/{}?start=help".format(bot.username)) ]]))
+                    [[InlineKeyboardButton(text="🎉 Add me to your group", url="t.me/{}?startgroup=true".format(bot.username)),  InlineKeyboardButton(text="don't click on this", url="https://youtu.be/FHzPM1bTWjQ")],
+                     [InlineKeyboardButton(text="👥 Support Group", url="https://t.me/jehrilla_support"), InlineKeyboardButton(text=" Update telegram group", url="https://t.me/jehrilla_support")],
+                     [InlineKeyboardButton(text="👨‍💻 Make", url="https://youtu.be/FHzPM1bTWjQ"), InlineKeyboardButton(text="🛠 Help", url="https://t.me/{}?start=help".format(bot.username)) ]]))
 
     else:
-        update.effective_message.reply_text("ചത്തിട്ടില്ലാ...")
+        update.effective_message.reply_text("kya hai...")
 
 
 # for test purposes
