@@ -1,7 +1,7 @@
 # samantha
 ![Typing SVG](https://readme-typing-svg.herokuapp.com/?lines=welcome+To+Rose's+Repo!;A+simple+Group+modular+bot!;and+all+futures!)
 </p>
-<center><img https://te.legra.ph/file/11d176181d16b572ca380.jpg"></center>
+<center><img="https://te.legra.ph/file/11d176181d16b572ca380.jpg"></center>
 <br>
 <center><a href="https://www.python.org">
     <img src="http://ForTheBadge.com/images/badges/made-with-python.svg">
