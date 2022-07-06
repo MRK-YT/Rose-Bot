@@ -22,7 +22,7 @@ announcements.
 Alternatively, [find me on telegram](https://t.me/jithumon)! (Keep all support questions in the support chat, where more people can help you.)
 
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/famegfx/samantha_robot)<br>
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/famegfx/samantha_thebot)<br>
 There is also a [tutorial video](https://youtu.be/FHzPM1bTWjQ) if you want any help on creating heroku clone.
 [![telegram badge](https://img.shields.io/badge/Support-Group-30302f?style=flat&logo=telegram)](https://telegram.dog/jehrilla_supportr)
 [![telegram badge](https://img.shields.io/badge/Update-Channel-30302f?style=flat&logo=telegram)](https://telegram.dog/Jehrilla_user)
