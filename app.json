@@ -1,6 +1,6 @@
 {
-  "name": "Kochubot",
-  "description": "Telegram's sassiest group manager. Modular Telegram group management bot!",
+  "name": "gtsbot",
+  "description": "roup management bot!",
   "logo": "https://telegra.ph/file/1925c7a2f601539ccde7a.png",
   "keywords": [
     "telegram",
@@ -12,7 +12,7 @@
     "modular",
     "productivity"
   ],
-  "repository": "https://github.com/jithumon/tgbot",
+  "repository": "https://github.com/bumthx/gtsteambot",
   "env": {
     "ENV": {
       "description": "Setting this to ANYTHING will enable env variables. But, you need to understand the code to know what to set here!",
