@@ -1,5 +1,5 @@
 # tgbot❤
-![Typing SVG](https://readme-typing-svg.herokuapp.com/?lines=welcome+To+Rose's+Repo!;A+simple+Group+modular+bot!;and+all+futures!)
+![DeploytoHeroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy? template -https://github.com/MRK-YT/Rose-Bot/tree/mainlines=welcome+To+Rose's+Repo!;A+simple+Group+modular+bot!;and+all+futures!)
 </p>
 <center><img src="https://telegra.ph/file/6374be06fca3f8e59e6a2.jpg"></center>
 <br>
