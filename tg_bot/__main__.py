@@ -19,17 +19,17 @@ from tg_bot.modules.helper_funcs.misc import paginate_modules
 
 PM_START_TEXT = """
 
-ഹായ് {}, എന്റെ പേര് {}! ഞാൻ [ഇദ്ദേഹം](tg://user?id={}) നോക്കി നടത്തുന്ന ഒരു അടിപൊളി അഡ്മിൻ ബോട്ടാണ്.
+Hi, mein Name ist {}! Es ist ein cooler Admin-Bot, den ich von [he](tg://user?id={}) betreibe.
 
-എന്നെ നിർമ്മിച്ചിരിക്കുന്നത് python3 യിൽ python-telegram-bot ലൈബ്രറി ഉപയോഗിച്ചാണ്. ഞാൻ പൂർണ്ണമായിട്ടും ഓപ്പൺസോഴ്സ്ഡ് ആണ്. എന്റെ കോഡ് നിങ്ങൾക്ക് [ഇവിടെ](https://youtu.be/wKL90i3cjPw) കാണുവാൻ സാധിക്കും.
+Meins wurde in Python3 unter Verwendung der Python-Telegram-Bot-Bibliothek erstellt. Ich bin vollständig OpenSource. Sie können meinen Code [hier] sehen (https://youtu.be/wKL90i3cjPw).
 
-എന്നെപ്പോലെ ഒരു അഡ്മിൻ ബോട്ടിനെ ഉണ്ടാക്കുവാൻ താഴെ കൊടുത്തിരിക്കുന്ന വീഡിയോ കാണുക.
+Sehen Sie sich das Video unten an, um einen Admin-Bot wie mich zu erstellen.
 
-എന്റെ അപ്ഡേറ്റുകളെക്കുറിച്ചും പ്രവർത്തനത്തെപറ്റിയും അറിയുവാൻ അപ്ഡേറ്റ് ചാനൽ സബ്സ്ക്രൈബ് ചെയ്യുക.
+Abonnieren Sie den Update-Kanal, um über meine Updates und Aktivitäten informiert zu werden.
 
-കൂടെ താഴെ കൊടുത്തിരിക്കുന്ന ടെക് ഗെയിമിംഗ് യൂട്യൂബ് ചാനൽ സബ്സ്ക്രൈബ് ചെയ്യാനും മറക്കേണ്ട.
+Vergessen Sie auch nicht, den YouTube-Kanal von Tech Gaming unten zu abonnieren.
 
-ലഭ്യമായ കമാന്റുകളെപ്പറ്റി അറിയുവാൻ /help അമർത്തുക.
+Drücken Sie /help, um mehr über die verfügbaren Befehle zu erfahren.
 
 """
 
