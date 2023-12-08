@@ -8,19 +8,19 @@
   </a></center><br>
 <br>
 
-Originally a simple group management bot with multiple admin features, it has evolved, becoming extremely modular and 
-simple to use.
+Ursprünglich ein einfacher Gruppenverwaltungs-Bot mit mehreren Admin-Funktionen, hat er sich zu einem äußerst modularen und äußerst modularen System entwickelt
+einfach zu benutzen.
 
-Can be found on telegram as [കൊച്ചുമുതലാളി](https://t.me/kochubot).
+#Can be found on telegram as [കൊച്ചുമുതലാളി](https://t.me/kochubot).
 
-Kochu and I are moderating a [support group](https://t.me/Keralabots), where you can ask for help setting up your
-bot, discover/request new features, report bugs, and stay in the loop whenever a new update is available. Of course
-I'll also help when a database schema changes, and some table column needs to be modified/added. Note to maintainers that all schema changes will be found in the commit messages, and its their responsibility to read any new commits.
+Kochu und ich moderieren eine [support group](https://t.me/Keralabots), in der Sie um Hilfe bei der Einrichtung Ihrer bitten können
+Bot, entdecken/anfordern Sie neue Funktionen, melden Sie Fehler und bleiben Sie auf dem Laufenden, wenn ein neues Update verfügbar ist. Natürlich
+Ich helfe auch, wenn sich ein Datenbankschema ändert und einige Tabellenspalten geändert/hinzugefügt werden müssen. Beachten Sie für Betreuer, dass alle Schemaänderungen in den Commit-Nachrichten zu finden sind und es in ihrer Verantwortung liegt, alle neuen Commits zu lesen
 
-Join the [news channel](https://t.me/Mo_Tech_YT) if you just want to stay in the loop about new features or
-announcements.
+Treten Sie dem [news channel](https://t.me/Mo_Tech_YT) wenn Sie einfach nur über neue Funktionen auf dem Laufenden bleiben möchten oder
+Ankündigungen.
 
-Alternatively, [find me on telegram](https://t.me/jithumon)! (Keep all support questions in the support chat, where more people can help you.)
+Alternativ, [find me on telegram](https://t.me/jithumon)! (Behalten Sie alle Support-Fragen im Support-Chat, wo Ihnen mehr Leute helfen können.)
 
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Onix-79/aura104bot)<br>
