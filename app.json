@@ -33,7 +33,7 @@
         },
         "URL": {
             "description": "The Heroku App URL similar to https://<appname>.herokuapp.com/",
-            "value": "https://aura103bot.herokuapp.com"
+            "value": "https://aura104bot.herokuapp.com"
         },
         "MESSAGE_DUMP": {
             "description": "optional: a chat where your replied saved messages are stored, to stop people deleting their old",
