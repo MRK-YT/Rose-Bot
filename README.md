@@ -8,22 +8,22 @@
   </a></center><br>
 <br>
 
-Originally a simple group management bot with multiple admin features, it has evolved, becoming extremely modular and 
-simple to use.
+Ursprünglich ein einfacher Gruppenverwaltungs-Bot mit mehreren Admin-Funktionen, hat er sich zu einem äußerst modularen und äußerst modularen System entwickelt
+einfach zu benutzen.
 
-Can be found on telegram as [കൊച്ചുമുതലാളി](https://t.me/kochubot).
+#Can be found on telegram as [കൊച്ചുമുതലാളി](https://t.me/kochubot).
 
-Kochu and I are moderating a [support group](https://t.me/Keralabots), where you can ask for help setting up your
-bot, discover/request new features, report bugs, and stay in the loop whenever a new update is available. Of course
-I'll also help when a database schema changes, and some table column needs to be modified/added. Note to maintainers that all schema changes will be found in the commit messages, and its their responsibility to read any new commits.
+Kochu und ich moderieren eine [support group](https://t.me/Keralabots), in der Sie um Hilfe bei der Einrichtung Ihrer bitten können
+Bot, entdecken/anfordern Sie neue Funktionen, melden Sie Fehler und bleiben Sie auf dem Laufenden, wenn ein neues Update verfügbar ist. Natürlich
+Ich helfe auch, wenn sich ein Datenbankschema ändert und einige Tabellenspalten geändert/hinzugefügt werden müssen. Beachten Sie für Betreuer, dass alle Schemaänderungen in den Commit-Nachrichten zu finden sind und es in ihrer Verantwortung liegt, alle neuen Commits zu lesen
 
-Join the [news channel](https://t.me/Mo_Tech_YT) if you just want to stay in the loop about new features or
-announcements.
+Treten Sie dem [news channel](https://t.me/Mo_Tech_YT) wenn Sie einfach nur über neue Funktionen auf dem Laufenden bleiben möchten oder
+Ankündigungen.
 
-Alternatively, [find me on telegram](https://t.me/jithumon)! (Keep all support questions in the support chat, where more people can help you.)
+Alternativ, [find me on telegram](https://t.me/jithumon)! (Behalten Sie alle Support-Fragen im Support-Chat, wo Ihnen mehr Leute helfen können.)
 
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/MRK-YT/Rose-Bot)<br>
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Onix-79/aura104bot)<br>
 There is also a [tutorial video](https://youtu.be/wKL90i3cjPw) if you want any help on creating heroku clone.
 [![telegram badge](https://img.shields.io/badge/Support-Group-30302f?style=flat&logo=telegram)](https://telegram.dog/keralabots)
 [![telegram badge](https://img.shields.io/badge/Update-Channel-30302f?style=flat&logo=telegram)](https://telegram.dog/kochuUpdates)
@@ -32,28 +32,29 @@ There is also a [tutorial video](https://youtu.be/wKL90i3cjPw) if you want any h
 
 ## Starting the bot.
 
-Once you've setup your database and your configuration (see below) is complete, simply run:
+Sobald Sie Ihre Datenbank eingerichtet und Ihre Konfiguration (siehe unten) abgeschlossen haben, führen Sie sie einfach aus:
 
 `python3 -m tg_bot`
 
 
 ## Setting up the bot (Read this before trying to use!):
-Please make sure to use python3.6, as I cannot guarantee everything will work as expected on older python versions!
-This is because markdown parsing is done by iterating through a dict, which are ordered by default in 3.6.
+Bitte stellen Sie sicher, dass Sie Python3.6 verwenden, da ich nicht garantieren kann, dass auf älteren Python-Versionen alles wie erwartet funktioniert!
+Dies liegt daran, dass das Markdown-Parsing durch die Iteration durch ein Diktat erfolgt, das in 3.6 standardmäßig geordnet ist
 
 ### Configuration
 
-There are two possible ways of configuring your bot: a config.py file, or ENV variables.
+Es gibt zwei Möglichkeiten, Ihren Bot zu konfigurieren: eine config.py-Datei oder ENV-Variablen.
 
-The prefered version is to use a `config.py` file, as it makes it easier to see all your settings grouped together.
-This file should be placed in your `tg_bot` folder, alongside the `__main__.py` file . 
-This is where your bot token will be loaded from, as well as your database URI (if you're using a database), and most of 
-your other settings.
+Die bevorzugte Version ist die Verwendung einer „config.py“-Datei, da Sie so alle Ihre Einstellungen einfacher gruppiert sehen können.
+Diese Datei sollte in Ihrem Ordner „tg_bot“ neben der Datei „__main__.py“ abgelegt werden.
+Von hier aus werden Ihr Bot-Token sowie Ihr Datenbank-URI (wenn Sie eine Datenbank verwenden) und vieles mehr geladen
+Ihre anderen Einstellungen.
 
-It is recommended to import sample_config and extend the Config class, as this will ensure your config contains all 
-defaults set in the sample_config, hence making it easier to upgrade.
 
-An example `config.py` file could be:
+Es wird empfohlen, „sample_config“ zu importieren und die Config-Klasse zu erweitern, da dadurch sichergestellt wird, dass Ihre Konfiguration alles enthält
+In der Beispielkonfiguration festgelegte Standardwerte, die das Upgrade erleichtern.
+
+Eine Beispieldatei „config.py“ könnte sein:
 ```
 from tg_bot.sample_config import Config
 
@@ -70,9 +71,9 @@ class Development(Config):
     NO_LOAD = ['translation']
 ```
 
-If you can't have a config.py file (EG on heroku), it is also possible to use environment variables.
-The following env variables are supported:
- - `ENV`: Setting this to ANYTHING will enable env variables
+Wenn Sie keine config.py-Datei haben (z. B. auf Heroku), ist es auch möglich, Umgebungsvariablen zu verwenden.
+Die folgenden Umgebungsvariablen werden unterstützt:
+ - „ENV“: Wenn Sie dies auf ALLES setzen, werden Umgebungsvariablen aktiviert
 
  - `TOKEN`: Your bot token, as a string.
  - `OWNER_ID`: An integer of consisting of your owner ID
